@@ -1,6 +1,6 @@
 import { User } from '../types';
 import { storageService } from './storageService';
-import { getSupabaseClient, isSupabaseConfigured } from '../lib/supabase';
+import { getSupabaseClient, isSupabaseConfigured, MODULE_TABLE_MAP } from '../lib/supabase';
 
 const USERS_STORAGE_KEY = 'hbdms_registered_users_v1';
 const SESSION_STORAGE_KEY = 'hbdms_active_session_v1';
@@ -217,6 +217,24 @@ class AuthService {
     return true;
   }
 
+  private async deleteUserFromSupabase(userId: string): Promise<void> {
+    if (!isSupabaseConfigured()) return;
+    const client = getSupabaseClient();
+    if (!client) return;
+    try {
+      // 1. Delete main account
+      await client.from('registered_users').delete().eq('id', userId);
+
+      // 2. Cascade delete all modules pushed by this user
+      const tables = Object.values(MODULE_TABLE_MAP);
+      for (const table of tables) {
+        await client.from(table).delete().eq('user_id', userId);
+      }
+    } catch (err) {
+      console.error('Failed to delete user and records from Supabase:', err);
+    }
+  }
+
   public deleteAccount(userId: string): boolean {
     const idx = this.users.findIndex((u) => u.id === userId);
     if (idx === -1) return false;
@@ -227,6 +245,10 @@ class AuthService {
     } catch (e) {
       console.error('Error removing user data', e);
     }
+
+    // Delete from Supabase cloud database
+    this.deleteUserFromSupabase(userId);
+
     this.saveSession(null);
     return true;
   }
