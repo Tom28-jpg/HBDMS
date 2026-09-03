@@ -1,5 +1,6 @@
 import { User } from '../types';
 import { storageService } from './storageService';
+import { getSupabaseClient, isSupabaseConfigured } from '../lib/supabase';
 
 const USERS_STORAGE_KEY = 'hbdms_registered_users_v1';
 const SESSION_STORAGE_KEY = 'hbdms_active_session_v1';
@@ -68,12 +69,7 @@ class AuthService {
     } catch (e) {
       console.error('Error loading session', e);
     }
-    // Default auto-login with primary demo user for immediate experience if first visit
-    const defaultUser = this.users[0] || null;
-    if (defaultUser) {
-      this.saveSession(defaultUser);
-      return defaultUser;
-    }
+    // No auto-login — always show the login page for new visitors
     return null;
   }
 
@@ -119,7 +115,7 @@ class AuthService {
     if (!data.name.trim()) return { success: false, error: 'Name is required' };
     if (!data.designation.trim()) return { success: false, error: 'Designation is required' };
     if (!data.hospitalName.trim()) return { success: false, error: 'Hospital Name is required' };
-    
+
     // Mobile validation: 10 digits
     const cleanMobile = data.mobileNumber.replace(/\D/g, '');
     if (cleanMobile.length < 10) {
@@ -160,7 +156,29 @@ class AuthService {
     this.saveUsers(this.users);
     this.saveSession(newUser);
 
+    // Persist to Supabase
+    this.saveUserToSupabase(newUser);
+
     return { success: true, user: newUser };
+  }
+
+  private async saveUserToSupabase(user: User): Promise<void> {
+    if (!isSupabaseConfigured()) return;
+    const client = getSupabaseClient();
+    if (!client) return;
+    try {
+      await client.from('registered_users').upsert({
+        id: user.id,
+        name: user.name,
+        designation: user.designation,
+        mobile_number: user.mobileNumber,
+        email: user.email,
+        hospital_name: user.hospitalName,
+        created_at: user.createdAt,
+      }, { onConflict: 'id' });
+    } catch (err) {
+      console.error('Failed to save user to Supabase:', err);
+    }
   }
 
   public login(email: string, password: string): { success: boolean; error?: string; user?: User } {

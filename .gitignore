@@ -6,3 +6,9 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Custom files to exclude
+.kilo/
+.kilocode/
+*.bat
+*.ps1

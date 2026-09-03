@@ -43,9 +43,11 @@ CREATE TABLE IF NOT EXISTS master_assets (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_master_assets_asset_id ON master_assets(asset_id);
-CREATE INDEX IF NOT EXISTS idx_master_assets_dept ON master_assets(department);
-CREATE INDEX IF NOT EXISTS idx_master_assets_status ON master_assets(equipment_status);
+CREATE INDEX IF NOT EXISTS idx_master_assets_asset_id ON master_assets (asset_id);
+
+CREATE INDEX IF NOT EXISTS idx_master_assets_dept ON master_assets (department);
+
+CREATE INDEX IF NOT EXISTS idx_master_assets_status ON master_assets (equipment_status);
 
 -- ------------------------------------------------------------------------------
 -- 2. DAILY BME ROUNDS LOG
@@ -68,9 +70,11 @@ CREATE TABLE IF NOT EXISTS daily_rounds (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_daily_rounds_asset_id ON daily_rounds(asset_id);
-CREATE INDEX IF NOT EXISTS idx_daily_rounds_date ON daily_rounds(date);
-CREATE INDEX IF NOT EXISTS idx_daily_rounds_dept ON daily_rounds(department);
+CREATE INDEX IF NOT EXISTS idx_daily_rounds_asset_id ON daily_rounds (asset_id);
+
+CREATE INDEX IF NOT EXISTS idx_daily_rounds_date ON daily_rounds (date);
+
+CREATE INDEX IF NOT EXISTS idx_daily_rounds_dept ON daily_rounds (department);
 
 -- ------------------------------------------------------------------------------
 -- 3. BREAKDOWN REGISTER & TICKETS
@@ -96,9 +100,11 @@ CREATE TABLE IF NOT EXISTS breakdowns (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_breakdowns_asset_id ON breakdowns(asset_id);
-CREATE INDEX IF NOT EXISTS idx_breakdowns_status ON breakdowns(status);
-CREATE INDEX IF NOT EXISTS idx_breakdowns_dept ON breakdowns(department);
+CREATE INDEX IF NOT EXISTS idx_breakdowns_asset_id ON breakdowns (asset_id);
+
+CREATE INDEX IF NOT EXISTS idx_breakdowns_status ON breakdowns (status);
+
+CREATE INDEX IF NOT EXISTS idx_breakdowns_dept ON breakdowns (department);
 
 -- ------------------------------------------------------------------------------
 -- 4. PURCHASE ORDER, INVOICE & INSTALLATION
@@ -129,8 +135,9 @@ CREATE TABLE IF NOT EXISTS po_invoices (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_po_invoices_po_num ON po_invoices(po_number);
-CREATE INDEX IF NOT EXISTS idx_po_invoices_asset_id ON po_invoices(asset_id);
+CREATE INDEX IF NOT EXISTS idx_po_invoices_po_num ON po_invoices (po_number);
+
+CREATE INDEX IF NOT EXISTS idx_po_invoices_asset_id ON po_invoices (asset_id);
 
 -- ------------------------------------------------------------------------------
 -- 5. PREVENTIVE MAINTENANCE (PM) REPORTS
@@ -154,9 +161,11 @@ CREATE TABLE IF NOT EXISTS preventive_maintenances (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_pm_asset_id ON preventive_maintenances(asset_id);
-CREATE INDEX IF NOT EXISTS idx_pm_status ON preventive_maintenances(status);
-CREATE INDEX IF NOT EXISTS idx_pm_next_date ON preventive_maintenances(next_pm_date);
+CREATE INDEX IF NOT EXISTS idx_pm_asset_id ON preventive_maintenances (asset_id);
+
+CREATE INDEX IF NOT EXISTS idx_pm_status ON preventive_maintenances (status);
+
+CREATE INDEX IF NOT EXISTS idx_pm_next_date ON preventive_maintenances (next_pm_date);
 
 -- ------------------------------------------------------------------------------
 -- 6. CALIBRATION & QUALITY ASSURANCE REPORTS
@@ -179,8 +188,9 @@ CREATE TABLE IF NOT EXISTS calibrations (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_calibrations_asset_id ON calibrations(asset_id);
-CREATE INDEX IF NOT EXISTS idx_calibrations_due_date ON calibrations(next_calibration_due_date);
+CREATE INDEX IF NOT EXISTS idx_calibrations_asset_id ON calibrations (asset_id);
+
+CREATE INDEX IF NOT EXISTS idx_calibrations_due_date ON calibrations (next_calibration_due_date);
 
 -- ------------------------------------------------------------------------------
 -- 7. SERVICE REPORTS & OEM JOB SHEETS
@@ -205,8 +215,9 @@ CREATE TABLE IF NOT EXISTS service_reports (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_service_reports_asset_id ON service_reports(asset_id);
-CREATE INDEX IF NOT EXISTS idx_service_reports_service_date ON service_reports(service_date);
+CREATE INDEX IF NOT EXISTS idx_service_reports_asset_id ON service_reports (asset_id);
+
+CREATE INDEX IF NOT EXISTS idx_service_reports_service_date ON service_reports (service_date);
 
 -- ------------------------------------------------------------------------------
 -- 8. GATE PASS (RGP & NRGP)
@@ -232,8 +243,9 @@ CREATE TABLE IF NOT EXISTS gate_passes (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_gate_passes_asset_id ON gate_passes(asset_id);
-CREATE INDEX IF NOT EXISTS idx_gate_passes_pass_num ON gate_passes(pass_number);
+CREATE INDEX IF NOT EXISTS idx_gate_passes_asset_id ON gate_passes (asset_id);
+
+CREATE INDEX IF NOT EXISTS idx_gate_passes_pass_num ON gate_passes (pass_number);
 
 -- ------------------------------------------------------------------------------
 -- 9. EQUIPMENT DISCARDING & CONDEMNATION
@@ -257,7 +269,7 @@ CREATE TABLE IF NOT EXISTS discarding_reports (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_discarding_asset_id ON discarding_reports(asset_id);
+CREATE INDEX IF NOT EXISTS idx_discarding_asset_id ON discarding_reports (asset_id);
 
 -- ------------------------------------------------------------------------------
 -- 10. INTER-DEPARTMENT HANDOVER
@@ -281,7 +293,7 @@ CREATE TABLE IF NOT EXISTS handovers (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_handovers_asset_id ON handovers(asset_id);
+CREATE INDEX IF NOT EXISTS idx_handovers_asset_id ON handovers (asset_id);
 
 -- ------------------------------------------------------------------------------
 -- 11. USER TRAINING & COMPETENCY RECORDS
@@ -304,7 +316,7 @@ CREATE TABLE IF NOT EXISTS user_trainings (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_user_trainings_asset_id ON user_trainings(asset_id);
+CREATE INDEX IF NOT EXISTS idx_user_trainings_asset_id ON user_trainings (asset_id);
 
 -- ------------------------------------------------------------------------------
 -- 12. MEDICAL DEVICE VIGILANCE & HAZARD RECALL
@@ -330,8 +342,9 @@ CREATE TABLE IF NOT EXISTS recalls (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_recalls_asset_id ON recalls(asset_id);
-CREATE INDEX IF NOT EXISTS idx_recalls_status ON recalls(status);
+CREATE INDEX IF NOT EXISTS idx_recalls_asset_id ON recalls (asset_id);
+
+CREATE INDEX IF NOT EXISTS idx_recalls_status ON recalls (status);
 
 -- ------------------------------------------------------------------------------
 -- 13. USER PROFILES & ACCOUNTS
@@ -348,6 +361,16 @@ CREATE TABLE IF NOT EXISTS hbdms_users (
   updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS registered_users (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  designation TEXT,
+  mobile_number TEXT,
+  email TEXT UNIQUE NOT NULL,
+  hospital_name TEXT,
+  created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- ==============================================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
 -- Enables standard access via anon and authenticated Supabase keys
@@ -360,7 +383,7 @@ DECLARE
     'master_assets', 'daily_rounds', 'breakdowns', 'po_invoices',
     'preventive_maintenances', 'calibrations', 'service_reports',
     'gate_passes', 'discarding_reports', 'handovers', 'user_trainings',
-    'recalls', 'hbdms_users'
+    'recalls', 'hbdms_users', 'registered_users'
   ];
 BEGIN
   FOREACH tbl IN ARRAY tbls LOOP
