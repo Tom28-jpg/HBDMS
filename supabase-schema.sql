@@ -368,6 +368,7 @@ CREATE TABLE IF NOT EXISTS registered_users (
   mobile_number TEXT,
   email TEXT UNIQUE NOT NULL,
   hospital_name TEXT,
+  password_hash TEXT,
   created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 

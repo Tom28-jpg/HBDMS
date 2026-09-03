@@ -174,6 +174,7 @@ class AuthService {
         mobile_number: user.mobileNumber,
         email: user.email,
         hospital_name: user.hospitalName,
+        password_hash: user.passwordHash,
         created_at: user.createdAt,
       }, { onConflict: 'id' });
     } catch (err) {
