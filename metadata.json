@@ -1,0 +1,6 @@
+{
+  "name": "Hospital Biomedical Document Management System (HBDMS)",
+  "description": "Comprehensive web-based documentation and lifecycle management platform for Hospital Biomedical Engineers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
